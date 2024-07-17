@@ -9,7 +9,7 @@ def rosenbrock_3d(x, a=1, b=100):
     where typically a = 1 and b = 100.
 
     Parameters:
-    - x : array_like, The input variables array where x = [x1, x2, x3].
+    - x : array_like, The input variables array where x = [x1, x2, ..., xN].
     - a : float, The constant term for the (a-x)^2 part (default: 1).
     - b : float, The constant term for the b*(y-x^2)^2 part (default: 100).
 
@@ -23,6 +23,12 @@ def rosenbrock_3d(x, a=1, b=100):
     # Calculate the Rosenbrock function for each row in X (each input vector)
     sum_terms = (a - X[:, 0])**2 + b * (X[:, 1] - X[:, 0]**2)**2 + (a - X[:, 1])**2 + b * (X[:, 2] - X[:, 1]**2)**2
     return - sum_terms
+
+def rosenbrock_nd(X, a=1, b=100):
+    """N-dimensional Rosenbrock function"""
+    X = np.atleast_2d(X)
+    sum_terms = np.sum(b * (X[:, 1:] - X[:, :-1]**2)**2 + (a - X[:, :-1])**2, axis=1)
+    return -sum_terms
 
 # # Run script
 # def main():
