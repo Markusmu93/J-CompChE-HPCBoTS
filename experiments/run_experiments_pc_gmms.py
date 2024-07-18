@@ -145,11 +145,11 @@ def run_high_dimensional_experiment(args):
         x_file_path = f'../results_pcBO/results_gmms/histories_dict_X_function_experimental_{label}_gmm_case_{case_num}.pkl'
         
         save_histories(histories_dict_y, y_file_path)
-        save_histories(histories_dict_X, x_file_path)
+        # save_histories(histories_dict_X, x_file_path)
 
 if __name__ == "__main__":
     num_processes = 6
-    n_iterations = 10
+    n_iterations = 5
     experiments_per_obj_f = 3
     batch_size = 4
 
@@ -162,13 +162,13 @@ if __name__ == "__main__":
     pc_BO_basic_GPUCB = partial(BO_PC_basic_direct_gpucb.pc_BO_basic, acquisition_type='GP-UCB')
 
     list_of_methods = [
-        # (pc_BO_TS_UCB, 'TS-Constrained_UCB'), 
-        # (pc_BO_TS_EI, 'TS-Constrained_EI'), 
-        # (pc_BO_TS_PI, 'TS-Constrained_PI'),
-        # (pc_BO_basic_UCB, 'PC-Basic-UCB'),
-        # (pc_BO_basic_GPUCB, 'PC-Basic-GPUCB'),
-        # (pc_BO_nested_ucb, 'PC-Nested-UCB'),
-        # (pc_BO_nested_gpucb, 'PC-Nested-GPUCB'),
+        (pc_BO_TS_UCB, 'TS-Constrained_UCB'), 
+        (pc_BO_TS_EI, 'TS-Constrained_EI'), 
+        (pc_BO_TS_PI, 'TS-Constrained_PI'),
+        (pc_BO_basic_UCB, 'PC-Basic-UCB'),
+        (pc_BO_basic_GPUCB, 'PC-Basic-GPUCB'),
+        (pc_BO_nested_ucb, 'PC-Nested-UCB'),
+        (pc_BO_nested_gpucb, 'PC-Nested-GPUCB'),
         (random_strategy_X, 'Random'),
         (bayesian_optimization_strategy_X, 'Bayesian')
     ]
