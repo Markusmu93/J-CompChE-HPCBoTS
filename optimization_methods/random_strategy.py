@@ -1,5 +1,6 @@
 import sys
 import os
+from scipy.stats import uniform
 
 # Add the parent directory to the system path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -16,3 +17,13 @@ def random_strategy(objective_function, domain, n_iterations, random_state=None)
         results[t] = objective_function(random_point)
     return results
 
+
+
+# Define the random strategy
+def random_strategy_X(objective_function, domain, n_iterations, state_seed):
+    # Generate random points in the domain
+    np.random.seed(state_seed)
+    points = np.array([uniform.rvs(loc=d['domain'][0], scale=d['domain'][1]-d['domain'][0], size=n_iterations) for d in domain]).T
+    
+    # Evaluate the objective function at these points
+    return [objective_function(point.reshape(1, -1)) for point in points], points

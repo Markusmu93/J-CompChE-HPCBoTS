@@ -89,3 +89,9 @@ def bayesian_optimization_strategy(objective_function, domain, n_iterations, ran
     optimizer = BayesianOptimization(bounds=bounds, func=objective_function, state_seed=random_state)
     optimizer.optimize(n_iter=n_iterations)
     return optimizer.get_observations()
+
+def bayesian_optimization_strategy_X(objective_function, domain, n_iterations, random_state=None):
+    bounds = [(low, high) for low, high in domain.values()]
+    optimizer = BayesianOptimization(bounds=bounds, func=objective_function, state_seed=random_state)
+    optimizer.optimize(n_iter=n_iterations)
+    return optimizer.get_observations(), optimizer.get_X()

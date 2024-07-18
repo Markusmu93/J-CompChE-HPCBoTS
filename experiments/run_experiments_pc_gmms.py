@@ -11,9 +11,9 @@ import numpy as np
 import concurrent.futures
 from functools import partial
 from utils.file_handling import load_histories, save_histories, extract_case_and_num
-from objective_functions.gmm import GaussianMixtureModel, gmm_objective_function_array, gmm_objective_function_dict
-from optimization_methods.random_strategy import random_strategy
-from optimization_methods.bayesian_optimization_general import bayesian_optimization_strategy
+from objective_functions.gmm import load_gmm_from_json, gmm_objective_function_array, gmm_objective_function_scalar
+from optimization_methods.random_strategy import random_strategy_X
+from optimization_methods.bayesian_optimization_general import bayesian_optimization_strategy_X
 
 
 # def run_high_dimensional_experiment(args):
@@ -121,7 +121,7 @@ def run_high_dimensional_experiment(args):
         print(f"Started {label} for GMM")
         for j in range(experiments_per_obj_f):
             if label == 'Bayesian':
-                history_y, history_X = optimization_strategy(partial(gmm_objective_function_dict, gmm=gmm), bayesian_domain, n_iterations, random_state=j)
+                history_y, history_X = optimization_strategy(partial(gmm_objective_function_scalar, gmm=gmm), bayesian_domain, n_iterations, random_state=j)
             elif label == 'Random':
                 history_y, history_X = optimization_strategy(partial(gmm_objective_function_array, gmm=gmm), domain, n_iterations, state_seed=j)
             else:
@@ -162,15 +162,15 @@ if __name__ == "__main__":
     pc_BO_basic_GPUCB = partial(BO_PC_basic_direct_gpucb.pc_BO_basic, acquisition_type='GP-UCB')
 
     list_of_methods = [
-        (pc_BO_TS_UCB, 'TS-Constrained_UCB'), 
-        (pc_BO_TS_EI, 'TS-Constrained_EI'), 
-        (pc_BO_TS_PI, 'TS-Constrained_PI'),
-        (pc_BO_basic_UCB, 'PC-Basic-UCB'),
-        (pc_BO_basic_GPUCB, 'PC-Basic-GPUCB'),
-        (pc_BO_nested_ucb, 'PC-Nested-UCB'),
-        (pc_BO_nested_gpucb, 'PC-Nested-GPUCB'),
-        (random_strategy, 'Random'),
-        (bayesian_optimization_strategy, 'Bayesian')
+        # (pc_BO_TS_UCB, 'TS-Constrained_UCB'), 
+        # (pc_BO_TS_EI, 'TS-Constrained_EI'), 
+        # (pc_BO_TS_PI, 'TS-Constrained_PI'),
+        # (pc_BO_basic_UCB, 'PC-Basic-UCB'),
+        # (pc_BO_basic_GPUCB, 'PC-Basic-GPUCB'),
+        # (pc_BO_nested_ucb, 'PC-Nested-UCB'),
+        # (pc_BO_nested_gpucb, 'PC-Nested-GPUCB'),
+        (random_strategy_X, 'Random'),
+        (bayesian_optimization_strategy_X, 'Bayesian')
     ]
 
     domain = [{'name': 'x1', 'type': 'constrained', 'domain': (-3, 3)}, 
@@ -186,4 +186,4 @@ if __name__ == "__main__":
     for i in range(1, 5):
         json_filename = f'../objective_functions/json_gmms/gmm_case_{i}_num_1.json'
         for method in list_of_methods:
-            run_high_dimensional_experiment((domain, n_iterations
+            run_high_dimensional_experiment((domain, n_iterations, experiments_per_obj_f, [method], batch_size, json_filename))
